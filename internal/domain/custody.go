@@ -35,16 +35,6 @@ type CustodyHandoff struct {
 	Version        int64         `json:"version"`
 }
 
-func (h CustodyHandoff) CanResolve(principalID string, operations bool) bool {
-	if operations {
-		return true
-	}
-	if strings.TrimSpace(principalID) == "" {
-		return false
-	}
-	return h.FromCustodian == principalID
-}
-
 func (h CustodyHandoff) Validate() error {
 	if strings.TrimSpace(h.ShipmentID) == "" || strings.TrimSpace(h.FromCustodian) == "" || strings.TrimSpace(h.ToCustodian) == "" {
 		return FieldError{Field: "handoff", Message: "shipment and custodians are required"}

@@ -69,8 +69,7 @@ func (s *CustodyService) ResolveHandoff(ctx context.Context, handoffID string, a
 		if err != nil {
 			return err
 		}
-		operations := principal.Can(domain.RoleOperations)
-		if !handoff.CanResolve(principal.UserID, operations) {
+		if handoff.ToCustodian != principal.UserID && !principal.Can(domain.RoleOperations) {
 			return domain.ConflictError{Resource: "handoff", Reason: "only the receiving custodian may resolve it"}
 		}
 		status := domain.HandoffRejected
